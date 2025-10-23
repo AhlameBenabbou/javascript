@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>QCM</title>
+</head>
+<body>
+
+  <h1>QCM</h1>
+
+  <form id="qcm">
+    
+    <!-- Question 1 : Choix multiples -->
+    <h3>Question 1 : Quels sont les langages web ? (Plusieurs réponses)</h3>
+    <input type="checkbox" name="q1" value="html"> HTML<br>
+    <input type="checkbox" name="q1" value="python"> Python<br>
+    <input type="checkbox" name="q1" value="javascript"> JavaScript<br>
+    <input type="checkbox" name="q1" value="css"> CSS<br><br>
+
+    <!-- Question 2 : Choix simple -->
+    <h3>Question 2 : Quelle balise crée un lien ? (Une réponse)</h3>
+    <input type="radio" name="q2" value="link"> &lt;link&gt;<br>
+    <input type="radio" name="q2" value="a"> &lt;a&gt;<br>
+    <input type="radio" name="q2" value="href"> &lt;href&gt;<br><br>
+
+    <!-- Question 3 : Choix multiples -->
+    <h3>Question 3 : Quelles sont des propriétés CSS ? (Plusieurs réponses)</h3>
+    <input type="checkbox" name="q3" value="color"> color<br>
+    <input type="checkbox" name="q3" value="width"> width<br>
+    <input type="checkbox" name="q3" value="function"> function<br>
+    <input type="checkbox" name="q3" value="margin"> margin<br><br>
+
+    <!-- Question 4 : Choix simple -->
+    <h3>Question 4 : Comment déclarer une variable ? (Une réponse)</h3>
+    <input type="radio" name="q4" value="var"> var x = 5;<br>
+    <input type="radio" name="q4" value="variable"> variable x = 5;<br>
+    <input type="radio" name="q4" value="int"> int x = 5;<br><br>
+
+    <!-- Question 5 : Choix multiples -->
+    <h3>Question 5 : Quels sont des types JavaScript ? (Plusieurs réponses)</h3>
+    <input type="checkbox" name="q5" value="string"> String<br>
+    <input type="checkbox" name="q5" value="number"> Number<br>
+    <input type="checkbox" name="q5" value="character"> Character<br>
+    <input type="checkbox" name="q5" value="boolean"> Boolean<br><br>
+
+  </form>
+
+  <!-- Boutons -->
+  <button onclick="initialiser()">Réinitialiser</button>
+  <button onclick="afficherCorrige()">Corrigé</button>
+  <button onclick="afficherResultat()">Résultat</button>
+
+  <script>
+    // Bonnes réponses
+    const bonnes = {
+      q1: ['html', 'javascript', 'css'],
+      q2: 'a',
+      q3: ['color', 'width', 'margin'],
+      q4: 'var',
+      q5: ['string', 'number', 'boolean']
+    };
+
+    // Réinitialiser
+    function initialiser() {
+      document.getElementById('qcm').reset();
+    }
+
+    // Afficher le corrigé
+    function afficherCorrige() {
+      let html = '<h1>Corrigé</h1>';
+      html += '<p>Question 1 : HTML, JavaScript, CSS</p>';
+      html += '<p>Question 2 : &lt;a&gt;</p>';
+      html += '<p>Question 3 : color, width, margin</p>';
+      html += '<p>Question 4 : var x = 5;</p>';
+      html += '<p>Question 5 : String, Number, Boolean</p>';
+
+      let fenetre = window.open('', '', 'width=500,height=400');
+      fenetre.document.write(html);
+    }
+
+    // Afficher le résultat
+    function afficherResultat() {
+      // Récupérer Q1
+      let q1 = [];
+      document.querySelectorAll('input[name="q1"]:checked').forEach(i => {
+        q1.push(i.value);
+      });
+
+      // Récupérer Q2
+      let q2Input = document.querySelector('input[name="q2"]:checked');
+      let q2 = q2Input ? q2Input.value : null;
+
+      // Récupérer Q3
+      let q3 = [];
+      document.querySelectorAll('input[name="q3"]:checked').forEach(i => {
+        q3.push(i.value);
+      });
+
+      // Récupérer Q4
+      let q4Input = document.querySelector('input[name="q4"]:checked');
+      let q4 = q4Input ? q4Input.value : null;
+
+      // Récupérer Q5
+      let q5 = [];
+      document.querySelectorAll('input[name="q5"]:checked').forEach(i => {
+        q5.push(i.value);
+      });
+
+      // Vérifier les réponses
+      let html = '<h1>Résultat</h1>';
+      let score = 0;
+
+      // Vérifier Q1
+      if (JSON.stringify(q1.sort()) === JSON.stringify(bonnes.q1.sort())) {
+        html += '<p>Question 1 : Correcte</p>';
+        score++;
+      } else {
+        html += '<p>Question 1 : Incorrecte</p>';
+      }
+
+      // Vérifier Q2
+      if (q2 === bonnes.q2) {
+        html += '<p>Question 2 : Correcte</p>';
+        score++;
+      } else {
+        html += '<p>Question 2 : Incorrecte</p>';
+      }
+
+      // Vérifier Q3
+      if (JSON.stringify(q3.sort()) === JSON.stringify(bonnes.q3.sort())) {
+        html += '<p>Question 3 : Correcte</p>';
+        score++;
+      } else {
+        html += '<p>Question 3 : Incorrecte</p>';
+      }
+
+      // Vérifier Q4
+      if (q4 === bonnes.q4) {
+        html += '<p>Question 4 : Correcte</p>';
+        score++;
+      } else {
+        html += '<p>Question 4 : Incorrecte</p>';
+      }
+
+      // Vérifier Q5
+      if (JSON.stringify(q5.sort()) === JSON.stringify(bonnes.q5.sort())) {
+        html += '<p>Question 5 : Correcte</p>';
+        score++;
+      } else {
+        html += '<p>Question 5 : Incorrecte</p>';
+      }
+
+      html += '<h2>Score : ' + score + ' / 5</h2>';
+
+      let fenetre = window.open('', '', 'width=400,height=350');
+      fenetre.document.write(html);
+    }
+  </script>
+
+</body>
+</html>
